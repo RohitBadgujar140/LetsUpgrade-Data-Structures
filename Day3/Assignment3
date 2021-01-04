@@ -1,1 +1,39 @@
+Question 1)
 
+void insert_beg()
+{
+  temp2=new node;
+	cout<<"enter data in temp2"<<endl;
+	cin>>temp2->data;
+	temp2->next=NULL;
+	temp2->next=head;
+	head=temp2
+}
+
+_____________________________________________________________________________________________________________________________________________________________________________
+
+Question 2)
+
+void delete_beg()
+{
+  temp1=head;
+	head=head->next;
+	temp1->next=NULL;
+	delete temp1;
+}
+
+_____________________________________________________________________________________________________________________________________________________________________________
+
+Question 3)
+
+void delete_end()
+{
+   temp1=head;
+	while(temp1->next==NULL)
+	{
+		delete temp1;
+		break;
+	}
+	 temp1=temp1->next;
+
+}
