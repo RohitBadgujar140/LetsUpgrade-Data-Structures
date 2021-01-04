@@ -1,1 +1,60 @@
+Question 1)
+
+There's no guarantee that beg+end is representable; but in the second case beg + (end - beg) / 2 the intermediate values, as well as the expected result, are no larger than end, so there is no danger of overflow.
+
+The second form can also be used for affine types like pointers and other random-access iterators, which can be subtracted to give a distance, but not added together.
+
+_________________________________________________________________________________________________________________________________________________________________________________
+
+
+Question 2)
+
+Algorithm:
+
+Consider any 2 points m1, and m2 in this interval: l<m1<m2<r. We evaluate the function at m1 and m2, i.e. find the values of f(m1) and f(m2). Now, we get one of three options:
+
+f(m1)<f(m2)
+The desired maximum can not be located on the left side of m1, i.e. on the interval [l,m1], since either both points m1 and m2 or just m1 belong to the area where the function
+increases. In either case, this means that we have to search for the maximum in the segment [m1,r].
+
+f(m1)>f(m2)
+This situation is symmetrical to the previous one: the maximum can not be located on the right side of m2, i.e. on the interval [m2,r], and the search space is reduced to the
+segment [l,m2].
+
+f(m1)=f(m2)
+We can see that either both of these points belong to the area where the value of the function is maximized, or m1 is in the area of increasing values and m2 is in the area of
+descending values (here we used the strictness of function increasing/decreasing). Thus, the search space is reduced to [m1,m2]. To simplify the code, this case can be combined
+with any of the previous cases.
+
+Thus, based on the comparison of the values in the two inner points, we can replace the current interval [l,r] with a new, shorter interval [l′,r′]. Repeatedly applying the
+described procedure to the interval, we can get an arbitrarily short interval. Eventually, its length will be less than a certain pre-defined constant (accuracy), and the
+process can be stopped. This is a numerical method, so we can assume that after that the function reaches its maximum at all points of the last interval [l,r]. Without loss of
+generality, we can take f(l) as the return value.
+
+We didn't impose any restrictions on the choice of points m1 and m2. This choice will define the convergence rate and the accuracy of the implementation. The most common way is
+to choose the points so that they divide the interval [l,r] into three equal parts. Thus, we have
+
+m1=l+(r−l)3
+m2=r−(r−l)3
+If m1 and m2 are chosen to be closer to each other, the convergence rate will increase slightly.
+
+Run time analysis
+T(n)=T(2n/3)+1=Θ(logn)
+It can be visualized as follows: every time after evaluating the function at points m1 and m2, we are essentially ignoring about one third of the interval, either the left or
+right one. Thus the size of the search space is 2n/3 of the original one.
+
+Applying Master's Theorem, we get the desired complexity estimate.
+
+The case of the integer arguments
+If f(x) takes integer parameter, the interval [l,r] becomes discrete. Since we did not impose any restrictions on the choice of points m1 and m2, the correctness of the
+algorithm is not affected. m1 and m2 can still be chosen to divide [l,r] into 3 approximately equal parts.
+
+The difference occurs in the stopping criterion of the algorithm. Ternary search will have to stop when (r−l)<3, because in that case we can no longer select m1 and m2 to be
+different from each other as well as from l and r, and this can cause an infinite loop. Once (r−l)<3, the remaining pool of candidate points (l,l+1,…,r) needs to be checked to
+find the point which produces the maximum value f(x).
+
+
+
+
+
 
